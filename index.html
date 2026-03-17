@@ -81,7 +81,7 @@ button:hover{
     color:black;
 }
 
-/* ✅ SAFE TRANSITION */
+/* TRANSITION FIX (NO BLUE SCREEN) */
 .transition{
     position:fixed;
     top:0;
@@ -135,23 +135,33 @@ button:hover{
 
 <script>
 
+// ✅ AUTO REDIRECT IF ALREADY LOGGED IN
+if(localStorage.getItem("hdx_login") === "true"){
+    window.location.href = "home.html";
+}
+
 // SAFE LOAD
 window.onload = ()=>{
     document.getElementById("transition").classList.remove("active");
 };
 
-// LOGIN
+// 🔐 LOGIN FIXED
 function login(){
     let u = document.getElementById("user").value;
     let p = document.getElementById("pass").value;
 
     if(u === "HDX" && p === "788"){
+
+        // ✅ SAVE LOGIN
+        localStorage.setItem("hdx_login", "true");
+
         let t = document.getElementById("transition");
         t.classList.add("active");
 
         setTimeout(()=>{
             window.location.href = "home.html";
         },400);
+
     }else{
         document.getElementById("error").innerText = "Wrong ID ❌";
     }
