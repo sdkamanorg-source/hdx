@@ -15,9 +15,9 @@ body{
     justify-content:center;
     align-items:center;
     height:100vh;
-    overflow:hidden;
 }
 
+/* BOX */
 .container{
     border:2px solid #00ffff;
     width:90%;
@@ -27,30 +27,14 @@ body{
     position:relative;
 }
 
-/* ✅ FIXED TRANSITION */
-.transition{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:black; /* cyan hata diya */
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:0.5s;
-    pointer-events:none;
-    z-index:9999;
-}
-.transition.active{
-    transform:scaleX(1);
-}
-
+/* LINKS */
 .link-box{
     margin:15px 0;
     border-bottom:1px dashed #00ffff;
     padding-bottom:10px;
 }
 
+/* BUTTON */
 button{
     background:black;
     border:1px solid #00ffff;
@@ -65,24 +49,48 @@ button:hover{
     color:black;
 }
 
-/* About Button */
+/* ABOUT BUTTON */
 .about{
     position:absolute;
     right:10px;
     bottom:10px;
 }
 
-/* FPS Ping */
+/* 🔥 FPS + PING (NICHE FIXED) */
 .status{
-    position:absolute;
-    right:10px;
-    bottom:50px;
-    font-size:12px;
+    margin-top:20px;
+    text-align:center;
+    font-size:13px;
+}
+
+/* TRANSITION */
+.transition{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:0.4s;
+    z-index:9999;
+}
+
+.transition.active{
+    transform:scaleX(1);
 }
 </style>
 </head>
 
 <body>
+
+<!-- 🔐 PROTECTION -->
+<script>
+if(localStorage.getItem("hdx_login") !== "true"){
+    window.location.href = "index.html";
+}
+</script>
 
 <div class="transition" id="transition"></div>
 
@@ -90,44 +98,40 @@ button:hover{
 
     <!-- LINKS -->
     <div class="link-box">
-        <b>PANEL HDX Link</b>
+        <b>1st (Name) Link</b>
         <button onclick="openLink('https://example.com')">Open</button>
         <button onclick="downloadLink('https://example.com/file.zip')">Download</button>
     </div>
 
     <div class="link-box">
-        <b>PANEL HDX 2.0 Link</b>
+        <b>2nd (Name) Link</b>
         <button onclick="openLink('https://google.com')">Open</button>
         <button onclick="downloadLink('https://example.com/file2.zip')">Download</button>
     </div>
 
-    <!-- ABOUT BUTTON -->
+    <!-- 🔥 FPS + PING NICHE -->
+    <div class="status">
+        FPS: 60 | Ping: <span id="ping">--</span>
+    </div>
+
+    <!-- ABOUT -->
     <button class="about" onclick="goAbout()">..ABOUT HDX..</button>
 
-    <!-- FPS + PING -->
-    <div class="status">
-        FPS: 60 | Ping: <span id="ping">--</span>
-    </div>
-
 </div>
 
 <script>
-// ✅ PAGE LOAD FIX (blue screen bug fix)
-window.onload = ()=>{
-    document.getElementById("transition").classList.remove("active");
-};
 
-// Ping fake
+// PING
 setInterval(()=>{
     document.getElementById("ping").innerText = Math.floor(Math.random()*100)+" ms";
 },1000);
 
-// Open in new tab
+// OPEN
 function openLink(url){
     window.open(url, "_blank");
 }
 
-// Direct download
+// DOWNLOAD
 function downloadLink(url){
     let a = document.createElement("a");
     a.href = url;
@@ -135,55 +139,14 @@ function downloadLink(url){
     a.click();
 }
 
-// ✅ FIXED TRANSITION FUNCTION
+// ABOUT PAGE
 function goAbout(){
     let t = document.getElementById("transition");
     t.classList.add("active");
 
     setTimeout(()=>{
         window.location.href = "about.html";
-        t.classList.remove("active"); // 🔥 main fix
-    },500);
-}
-</script>
-
-</body>
-</html>    <!-- FPS + PING -->
-    <div class="status">
-        FPS: 60 | Ping: <span id="ping">--</span>
-    </div>
-
-</div>
-
-<script>
-// Ping fake
-setInterval(()=>{
-    document.getElementById("ping").innerText = Math.floor(Math.random()*100)+" ms";
-},1000);
-
-// Open in new tab
-function openLink(url){
-    window.open(url, "_blank");
-}
-
-// Direct download
-function downloadLink(url){
-    let a = document.createElement("a");
-    a.href = url;
-    a.download = "";
-    a.click();
-}
-
-// About page animation
-function goAbout(){
-    let t = document.getElementById("transition");
-    t.classList.add("active");
-
-    setTimeout(()=>{
-        window.location.href = "about.html";
-        t.classList.remove("active"); // 🔥 FIX
-    },500);
-}
+    },400);
 }
 </script>
 
