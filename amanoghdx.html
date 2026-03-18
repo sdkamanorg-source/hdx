@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HDX SYSTEM</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    color:#00ffcc;
+    font-family:monospace;
+    overflow:hidden;
+}
+
+/* BOOT SCREEN */
+#boot{
+    position:fixed;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    letter-spacing:3px;
+}
+
+.small{
+    font-size:12px;
+    margin-top:10px;
+    color:#00ffaa;
+}
+
+/* MAIN PANEL */
+#main{
+    display:none;
+    padding:20px;
+}
+
+/* TERMINAL BOX */
+.box{
+    border:1px solid #00ffcc;
+    padding:20px;
+    box-shadow:0 0 20px #00ffcc;
+}
+
+/* INPUT */
+input{
+    background:black;
+    border:1px solid #00ffcc;
+    color:#00ffcc;
+    padding:10px;
+    width:250px;
+}
+
+/* BUTTON */
+button{
+    background:black;
+    border:1px solid #00ffcc;
+    color:#00ffcc;
+    padding:10px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#00ffcc;
+    color:black;
+}
+
+/* TERMINAL TEXT */
+.terminal{
+    margin-top:20px;
+    font-size:13px;
+    height:200px;
+    overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BOOT -->
+<div id="boot">
+    <div id="text">HDX--SYSTEM -- OPENING</div>
+    <div class="small">Welcome AMAN</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+    <div class="box">
+
+        <h3>🔐 ADMIN ACCESS</h3>
+
+        <input type="password" id="key" placeholder="ENTER KEY"><br>
+        <button onclick="login()">ACCESS</button>
+
+        <div class="terminal" id="log"></div>
+
+        <div id="panel" style="display:none;">
+            <h3>⚡ CONTROL PANEL</h3>
+
+            <button onclick="changePassword()">Change Login Password</button><br>
+            <button onclick="systemInfo()">System Info</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+// BOOT ANIMATION
+setTimeout(()=>{
+    document.getElementById("boot").style.display="none";
+    document.getElementById("main").style.display="block";
+},2000);
+
+// ADMIN KEY
+const ADMIN_KEY = "HDX_ADMIN_999";
+
+// LOG FUNCTION
+function log(msg){
+    let l = document.getElementById("log");
+    l.innerHTML += "> " + msg + "<br>";
+    l.scrollTop = l.scrollHeight;
+}
+
+// LOGIN
+function login(){
+    let k = document.getElementById("key").value;
+
+    if(k === ADMIN_KEY){
+        log("ACCESS GRANTED ✅");
+        document.getElementById("panel").style.display="block";
+    }else{
+        log("ACCESS DENIED ❌");
+    }
+}
+
+// CHANGE PASSWORD
+function changePassword(){
+    let newPass = prompt("NEW LOGIN PASSWORD:");
+    if(newPass){
+        localStorage.setItem("hdx_pass", newPass);
+        log("PASSWORD UPDATED 🔑");
+    }
+}
+
+// SYSTEM INFO
+function systemInfo(){
+    log("User Agent: " + navigator.userAgent);
+    log("Platform: " + navigator.platform);
+    log("Status: ONLINE 🟢");
+}
+
+</script>
+
+</body>
+</html>
