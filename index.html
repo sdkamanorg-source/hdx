@@ -20,7 +20,6 @@ body{
     overflow:hidden;
 }
 
-/* PARTICLES */
 #particles{
     position:fixed;
     width:100%;
@@ -28,7 +27,6 @@ body{
     z-index:-1;
 }
 
-/* LOGIN BOX */
 .container{
     border:2px solid #00ffff;
     width:90%;
@@ -39,7 +37,6 @@ body{
     position:relative;
 }
 
-/* TOP INFO */
 .top{
     position:absolute;
     left:10px;
@@ -47,7 +44,6 @@ body{
     font-size:12px;
 }
 
-/* SIGNUP */
 .signup{
     position:absolute;
     right:10px;
@@ -56,7 +52,6 @@ body{
     font-size:12px;
 }
 
-/* INPUT */
 input{
     width:90%;
     padding:10px;
@@ -66,7 +61,6 @@ input{
     color:#00ffff;
 }
 
-/* BUTTON */
 button{
     padding:10px 25px;
     background:black;
@@ -81,7 +75,6 @@ button:hover{
     color:black;
 }
 
-/* TRANSITION FIX (NO BLUE SCREEN) */
 .transition{
     position:fixed;
     top:0;
@@ -100,7 +93,6 @@ button:hover{
     transform:scaleX(1);
 }
 
-/* ERROR */
 .error{
     color:red;
     font-size:12px;
@@ -135,25 +127,23 @@ button:hover{
 
 <script>
 
-// ✅ AUTO REDIRECT IF ALREADY LOGGED IN
-if(localStorage.getItem("hdx_login") === "true"){
-    window.location.href = "home.html";
-}
+// 🔐 ALWAYS RESET LOGIN (NO AUTO LOGIN)
+sessionStorage.removeItem("hdx_login");
 
 // SAFE LOAD
 window.onload = ()=>{
     document.getElementById("transition").classList.remove("active");
 };
 
-// 🔐 LOGIN FIXED
+// 🔐 LOGIN (SESSION BASED)
 function login(){
     let u = document.getElementById("user").value;
     let p = document.getElementById("pass").value;
 
     if(u === "HDX" && p === "788"){
 
-        // ✅ SAVE LOGIN
-        localStorage.setItem("hdx_login", "true");
+        // ✅ SESSION LOGIN
+        sessionStorage.setItem("hdx_login", "true");
 
         let t = document.getElementById("transition");
         t.classList.add("active");
