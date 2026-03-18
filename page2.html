@@ -49,6 +49,13 @@ button:hover{
     color:black;
 }
 
+/* BACK BUTTON */
+.back{
+    position:absolute;
+    left:10px;
+    bottom:10px;
+}
+
 /* ABOUT BUTTON */
 .about{
     position:absolute;
@@ -85,17 +92,12 @@ button:hover{
 
 <body>
 
-<!-- 🔐 PROTECTION (FIXED) -->
+<!-- 🔐 PROTECTION FIXED -->
 <script>
-// BLOCK DIRECT ACCESS
+// ✅ ONLY CHECK LOGIN (NO AUTO LOGOUT)
 if(sessionStorage.getItem("hdx_login") !== "true"){
     window.location.href = "index.html";
 }
-
-// AUTO LOGOUT ON LEAVE
-window.addEventListener("pagehide", function () {
-    sessionStorage.removeItem("hdx_login");
-});
 </script>
 
 <div class="transition" id="transition"></div>
@@ -120,53 +122,5 @@ window.addEventListener("pagehide", function () {
         FPS: <span id="fps">0</span> / 360 | Ping: <span id="ping">--</span>
     </div>
 
-    <!-- ABOUT -->
-    <button class="about" onclick="goAbout()">..ABOUT HDX..</button>
-
-</div>
-
-<script>
-
-// PING
-setInterval(()=>{
-    document.getElementById("ping").innerText = Math.floor(Math.random()*100)+" ms";
-},1000);
-
-// FPS
-let last = performance.now();
-function fps(){
-    let now = performance.now();
-    let value = Math.round(1000/(now-last));
-    last = now;
-    if(value>360) value=360;
-    document.getElementById("fps").innerText = value;
-    requestAnimationFrame(fps);
-}
-fps();
-
-// OPEN
-function openLink(url){
-    window.open(url, "_blank");
-}
-
-// DOWNLOAD
-function downloadLink(url){
-    let a = document.createElement("a");
-    a.href = url;
-    a.download = "";
-    a.click();
-}
-
-// ABOUT PAGE
-function goAbout(){
-    let t = document.getElementById("transition");
-    t.classList.add("active");
-
-    setTimeout(()=>{
-        window.location.href = "about.html";
-    },400);
-}
-</script>
-
-</body>
-</html>
+    <!-- BACK -->
+    <button class="
