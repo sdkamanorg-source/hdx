@@ -15,6 +15,15 @@ body{
     justify-content:center;
     align-items:center;
     height:100vh;
+    overflow:hidden;
+}
+
+/* PARTICLES */
+#particles{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-1;
 }
 
 /* BOX */
@@ -40,7 +49,7 @@ button{
     border:1px solid #00ffff;
     color:#00ffff;
     padding:5px 10px;
-    margin-left:10px;
+    margin:5px;
     cursor:pointer;
 }
 
@@ -49,18 +58,13 @@ button:hover{
     color:black;
 }
 
-/* BACK BUTTON */
-.back{
+/* NAV BUTTONS */
+.nav{
     position:absolute;
-    left:10px;
     bottom:10px;
-}
-
-/* ABOUT BUTTON */
-.about{
-    position:absolute;
-    right:10px;
-    bottom:10px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
 }
 
 /* STATUS */
@@ -69,58 +73,139 @@ button:hover{
     text-align:center;
     font-size:13px;
 }
-
-/* TRANSITION */
-.transition{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:black;
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:0.4s;
-    z-index:9999;
-}
-
-.transition.active{
-    transform:scaleX(1);
-}
 </style>
 </head>
 
 <body>
 
-<!-- 🔐 PROTECTION FIXED -->
+<!-- 🔐 LOGIN CHECK -->
 <script>
-// ✅ ONLY CHECK LOGIN (NO AUTO LOGOUT)
 if(sessionStorage.getItem("hdx_login") !== "true"){
     window.location.href = "index.html";
 }
 </script>
 
-<div class="transition" id="transition"></div>
+<canvas id="particles"></canvas>
 
 <div class="container">
 
     <!-- LINKS -->
     <div class="link-box">
-        <b>1st (Name) Link</b>
+        <b>1st Link</b>
         <button onclick="openLink('https://example.com')">Open</button>
         <button onclick="downloadLink('https://example.com/file.zip')">Download</button>
     </div>
 
     <div class="link-box">
-        <b>2nd (Name) Link</b>
+        <b>2nd Link</b>
         <button onclick="openLink('https://google.com')">Open</button>
         <button onclick="downloadLink('https://example.com/file2.zip')">Download</button>
     </div>
 
     <!-- STATUS -->
     <div class="status">
-        FPS: <span id="fps">0</span> / 360 | Ping: <span id="ping">--</span>
+        ⚡ FPS: <span id="fps">0</span> | 📡 Ping: <span id="ping">--</span>
     </div>
 
-    <!-- BACK -->
-    <button class="
+    <!-- NAV -->
+    <div class="nav">
+        <button onclick="goBack()">⬅ Back</button>
+        <button onclick="goNext()">Next ➡</button>
+    </div>
+
+</div>
+
+<script>
+
+// NAVIGATION
+function goBack(){
+    window.location.href = "home.html";
+}
+function goNext(){
+    window.location.href = "about.html";
+}
+
+// OPEN
+function openLink(url){
+    window.open(url, "_blank");
+}
+
+// DOWNLOAD
+function downloadLink(url){
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "";
+    a.click();
+}
+
+// REAL FPS
+let last = performance.now();
+function fps(){
+    let now = performance.now();
+    let value = Math.round(1000/(now-last));
+    last = now;
+    document.getElementById("fps").innerText = value;
+    requestAnimationFrame(fps);
+}
+fps();
+
+// REAL PING (approx)
+async function ping(){
+    let start = performance.now();
+    try{
+        await fetch("https://www.google.com", {mode:"no-cors"});
+        let end = performance.now();
+        document.getElementById("ping").innerText = Math.round(end-start)+" ms";
+    }catch{
+        document.getElementById("ping").innerText = "error";
+    }
+}
+setInterval(ping, 2000);
+
+// PARTICLES
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<100;i++){
+    particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        size:Math.random()*2,
+        dx:(Math.random()-0.5),
+        dy:(Math.random()-0.5)
+    });
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#00ffff";
+
+    particles.forEach(p=>{
+        p.x+=p.dx;
+        p.y+=p.dy;
+
+        if(p.x<0||p.x>canvas.width) p.dx*=-1;
+        if(p.y<0||p.y>canvas.height) p.dy*=-1;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener("resize",()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
