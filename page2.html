@@ -56,7 +56,7 @@ button:hover{
     bottom:10px;
 }
 
-/* 🔥 FPS + PING (NICHE FIXED) */
+/* STATUS */
 .status{
     margin-top:20px;
     text-align:center;
@@ -85,11 +85,17 @@ button:hover{
 
 <body>
 
-<!-- 🔐 PROTECTION -->
+<!-- 🔐 PROTECTION (FIXED) -->
 <script>
-if(localStorage.getItem("hdx_login") !== "true"){
+// BLOCK DIRECT ACCESS
+if(sessionStorage.getItem("hdx_login") !== "true"){
     window.location.href = "index.html";
 }
+
+// AUTO LOGOUT ON LEAVE
+window.addEventListener("pagehide", function () {
+    sessionStorage.removeItem("hdx_login");
+});
 </script>
 
 <div class="transition" id="transition"></div>
@@ -109,9 +115,9 @@ if(localStorage.getItem("hdx_login") !== "true"){
         <button onclick="downloadLink('https://example.com/file2.zip')">Download</button>
     </div>
 
-    <!-- 🔥 FPS + PING NICHE -->
+    <!-- STATUS -->
     <div class="status">
-        FPS: 60 | Ping: <span id="ping">--</span>
+        FPS: <span id="fps">0</span> / 360 | Ping: <span id="ping">--</span>
     </div>
 
     <!-- ABOUT -->
@@ -125,6 +131,18 @@ if(localStorage.getItem("hdx_login") !== "true"){
 setInterval(()=>{
     document.getElementById("ping").innerText = Math.floor(Math.random()*100)+" ms";
 },1000);
+
+// FPS
+let last = performance.now();
+function fps(){
+    let now = performance.now();
+    let value = Math.round(1000/(now-last));
+    last = now;
+    if(value>360) value=360;
+    document.getElementById("fps").innerText = value;
+    requestAnimationFrame(fps);
+}
+fps();
 
 // OPEN
 function openLink(url){
