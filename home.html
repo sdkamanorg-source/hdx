@@ -63,6 +63,13 @@ button:hover{
     transform:scale(1.1);
 }
 
+/* LOGOUT BUTTON */
+.logout{
+    position:absolute;
+    top:10px;
+    right:10px;
+}
+
 /* TRANSITION */
 .transition{
     position:fixed;
@@ -87,15 +94,10 @@ button:hover{
 
 <!-- 🔐 PROTECTION FIXED -->
 <script>
-// BLOCK DIRECT ACCESS
+// ✅ BLOCK DIRECT ACCESS (ONLY CHECK)
 if(sessionStorage.getItem("hdx_login") !== "true"){
     window.location.href = "index.html";
 }
-
-// AUTO LOGOUT ON LEAVE
-window.addEventListener("pagehide", function () {
-    sessionStorage.removeItem("hdx_login");
-});
 </script>
 
 <canvas id="particles"></canvas>
@@ -108,89 +110,4 @@ window.addEventListener("pagehide", function () {
         <div>⚡ FPS: <span id="fps">0</span>/360</div>
     </div>
 
-    <h1>WELCOME TO HDX</h1>
-
-    <button onclick="goNext()">➡ Go Next</button>
-
-</div>
-
-<script>
-
-// NEXT PAGE
-function goNext(){
-    let t = document.getElementById("transition");
-    t.classList.add("active");
-
-    setTimeout(()=>{
-        window.location.href = "page2.html";
-    },400);
-}
-
-// PING
-setInterval(()=>{
-    document.getElementById("ping").innerText = Math.floor(Math.random()*80+20)+" ms";
-},1000);
-
-// FPS
-let lastTime = performance.now();
-
-function updateFPS(){
-    let now = performance.now();
-    let fps = Math.round(1000 / (now - lastTime));
-    lastTime = now;
-
-    if(fps > 360) fps = 360;
-
-    document.getElementById("fps").innerText = fps;
-
-    requestAnimationFrame(updateFPS);
-}
-updateFPS();
-
-// PARTICLES
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<80;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        size:Math.random()*2,
-        dx:(Math.random()-0.5),
-        dy:(Math.random()-0.5)
-    });
-}
-
-function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="#00ffff";
-
-    particles.forEach(p=>{
-        p.x+=p.dx;
-        p.y+=p.dy;
-
-        if(p.x<0||p.x>canvas.width) p.dx*=-1;
-        if(p.y<0||p.y>canvas.height) p.dy*=-1;
-
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-        ctx.fill();
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-window.addEventListener("resize",()=>{
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
-</script>
-
-</body>
-</html>
+    <!-- 🔥
