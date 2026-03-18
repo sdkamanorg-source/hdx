@@ -11,10 +11,12 @@ body{
     background:black;
     color:#00ffff;
     font-family:Arial;
+
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+
+    min-height:100vh; /* FIX */
     overflow:hidden;
 }
 
@@ -29,11 +31,10 @@ body{
 /* BOX */
 .container{
     border:2px solid #00ffff;
-    width:90%;
-    max-width:600px;
-    padding:20px;
-    box-shadow:0 0 20px #00ffff;
-    position:relative;
+    width:95%;
+    max-width:800px; /* BIGGER */
+    padding:25px;
+    box-shadow:0 0 25px #00ffff;
 }
 
 /* LINKS */
@@ -48,7 +49,7 @@ button{
     background:black;
     border:1px solid #00ffff;
     color:#00ffff;
-    padding:5px 10px;
+    padding:8px 15px; /* FIX SIZE */
     margin:5px;
     cursor:pointer;
 }
@@ -58,11 +59,9 @@ button:hover{
     color:black;
 }
 
-/* NAV BUTTONS */
+/* NAV FIX (IMPORTANT) */
 .nav{
-    position:absolute;
-    bottom:10px;
-    width:100%;
+    margin-top:20px;
     display:flex;
     justify-content:space-between;
 }
@@ -78,7 +77,6 @@ button:hover{
 
 <body>
 
-<!-- 🔐 LOGIN CHECK -->
 <script>
 if(sessionStorage.getItem("hdx_login") !== "true"){
     window.location.href = "index.html";
@@ -89,7 +87,6 @@ if(sessionStorage.getItem("hdx_login") !== "true"){
 
 <div class="container">
 
-    <!-- LINKS -->
     <div class="link-box">
         <b>1st Link</b>
         <button onclick="openLink('https://example.com')">Open</button>
@@ -102,12 +99,10 @@ if(sessionStorage.getItem("hdx_login") !== "true"){
         <button onclick="downloadLink('https://example.com/file2.zip')">Download</button>
     </div>
 
-    <!-- STATUS -->
     <div class="status">
         ⚡ FPS: <span id="fps">0</span> | 📡 Ping: <span id="ping">--</span>
     </div>
 
-    <!-- NAV -->
     <div class="nav">
         <button onclick="goBack()">⬅ Back</button>
         <button onclick="goNext()">Next ➡</button>
@@ -117,7 +112,7 @@ if(sessionStorage.getItem("hdx_login") !== "true"){
 
 <script>
 
-// NAVIGATION
+// NAV
 function goBack(){
     window.location.href = "home.html";
 }
@@ -125,12 +120,11 @@ function goNext(){
     window.location.href = "about.html";
 }
 
-// OPEN
+// LINKS
 function openLink(url){
     window.open(url, "_blank");
 }
 
-// DOWNLOAD
 function downloadLink(url){
     let a = document.createElement("a");
     a.href = url;
@@ -138,7 +132,7 @@ function downloadLink(url){
     a.click();
 }
 
-// REAL FPS
+// FPS
 let last = performance.now();
 function fps(){
     let now = performance.now();
@@ -149,7 +143,7 @@ function fps(){
 }
 fps();
 
-// REAL PING (approx)
+// PING
 async function ping(){
     let start = performance.now();
     try{
@@ -162,22 +156,25 @@ async function ping(){
 }
 setInterval(ping, 2000);
 
-// PARTICLES
+// PARTICLES (SMOOTH)
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
 
 let particles = [];
 
-for(let i=0;i<100;i++){
+for(let i=0;i<120;i++){
     particles.push({
         x:Math.random()*canvas.width,
         y:Math.random()*canvas.height,
-        size:Math.random()*2,
-        dx:(Math.random()-0.5),
-        dy:(Math.random()-0.5)
+        size:Math.random()*2 + 0.5,
+        dx:(Math.random()-0.5)*0.3,
+        dy:(Math.random()-0.5)*0.3
     });
 }
 
@@ -201,10 +198,8 @@ function animate(){
 }
 animate();
 
-window.addEventListener("resize",()=>{
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
+window.addEventListener("resize", resize);
+
 </script>
 
 </body>
