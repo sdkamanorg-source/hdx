@@ -1,22 +1,13 @@
-<script>
-if(localStorage.getItem("hdx_login") !== "true"){
-    window.location.href = "index.html";
-}
-</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HDX Panel</title>
+<title>HDX Home</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-html{
-    scroll-behavior:smooth;
-}
-
 body{
     margin:0;
     background:black;
@@ -29,48 +20,40 @@ body{
     overflow:hidden;
 }
 
-/* Canvas */
+/* PARTICLES */
 #particles{
     position:fixed;
-    top:0;
-    left:0;
     width:100%;
     height:100%;
     z-index:-1;
 }
 
-/* Container */
+/* BOX */
 .container{
     border:2px solid #00ffff;
+    padding:20px;
     width:90%;
     max-width:500px;
-    padding:20px;
-    box-shadow:0 0 25px #00ffff;
     text-align:center;
-    backdrop-filter: blur(5px);
-    animation:fadeIn 0.8s ease forwards;
+    box-shadow:0 0 25px #00ffff;
+    position:relative;
 }
 
-@keyframes fadeIn{
-    from{opacity:0; transform:scale(0.9);}
-    to{opacity:1; transform:scale(1);}
-}
-
+/* TOP BAR */
 .top{
     display:flex;
     justify-content:space-between;
-    font-size:13px;
-    margin-bottom:10px;
+    font-size:12px;
 }
 
+/* BUTTON */
 button{
-    margin-top:30px;
+    margin-top:25px;
+    padding:12px 25px;
     background:black;
     border:1px solid #00ffff;
     color:#00ffff;
-    padding:12px 25px;
     cursor:pointer;
-    font-size:18px;
     transition:0.3s;
 }
 
@@ -80,18 +63,24 @@ button:hover{
     transform:scale(1.1);
 }
 
-/* ✅ FIXED TRANSITION */
+/* LOGOUT */
+.logout{
+    position:absolute;
+    top:10px;
+    right:10px;
+}
+
+/* TRANSITION */
 .transition{
     position:fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    background:black; /* cyan hata diya */
+    background:black;
     transform:scaleX(0);
     transform-origin:left;
-    transition:0.5s;
-    pointer-events:none;
+    transition:0.4s;
     z-index:9999;
 }
 
@@ -103,8 +92,14 @@ button:hover{
 
 <body>
 
-<canvas id="particles"></canvas>
+<!-- 🔐 PROTECTION -->
+<script>
+if(localStorage.getItem("hdx_login") !== "true"){
+    window.location.href = "index.html";
+}
+</script>
 
+<canvas id="particles"></canvas>
 <div class="transition" id="transition"></div>
 
 <div class="container">
@@ -114,50 +109,49 @@ button:hover{
         <div>⚡ FPS: <span id="fps">0</span>/360</div>
     </div>
 
-    <h1>WELCOME TO H.D.X</h1>
+    <button class="logout" onclick="logout()">Logout</button>
 
-    <button onclick="goNext()">➡</button>
+    <h1>WELCOME TO HDX</h1>
+
+    <button onclick="goNext()">➡ Go Next</button>
 
 </div>
 
 <script>
 
-// ✅ PAGE LOAD FIX
-window.onload = ()=>{
-    document.getElementById("transition").classList.remove("active");
-};
+// LOGOUT
+function logout(){
+    localStorage.removeItem("hdx_login");
 
-// 🎯 Click Sound
-function clickSound(){
-    let audio = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
-    audio.volume = 0.2;
-    audio.play();
-}
-
-// 🚀 FIXED TRANSITION
-function goNext(){
-    clickSound();
     let t = document.getElementById("transition");
     t.classList.add("active");
 
     setTimeout(()=>{
-        window.location.href = "page2.html"; // ⚠️ check file name
-        t.classList.remove("active"); // 🔥 MAIN FIX
-    },500);
+        window.location.href = "index.html";
+    },400);
 }
 
-// 📡 Ping
+// NEXT PAGE
+function goNext(){
+    let t = document.getElementById("transition");
+    t.classList.add("active");
+
+    setTimeout(()=>{
+        window.location.href = "page2.html";
+    },400);
+}
+
+// PING
 setInterval(()=>{
     document.getElementById("ping").innerText = Math.floor(Math.random()*80+20)+" ms";
 },1000);
 
-// ⚡ FPS
-let fps = 0;
+// FPS
 let lastTime = performance.now();
 
 function updateFPS(){
     let now = performance.now();
-    fps = Math.round(1000 / (now - lastTime));
+    let fps = Math.round(1000 / (now - lastTime));
     lastTime = now;
 
     if(fps > 360) fps = 360;
@@ -168,7 +162,7 @@ function updateFPS(){
 }
 updateFPS();
 
-// 🌌 PARTICLES
+// PARTICLES
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 
