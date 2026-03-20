@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDX 32BIT</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    color:lime; /* ✅ CHANGE COLOR */
+    font-family:Arial;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    min-height:100vh;
+    overflow:hidden;
+}
+
+/* TOP TITLE */
+.top-title{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:28px;
+    letter-spacing:2px;
+    color:lime;
+    text-shadow:0 0 10px lime, 0 0 25px lime;
+}
+
+/* PARTICLES */
+#particles{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+/* BOX */
+.container{
+    border:2px solid lime;
+    width:95%;
+    max-width:800px;
+    padding:25px;
+    box-shadow:0 0 25px lime;
+}
+
+/* LINKS */
+.link-box{
+    margin:15px 0;
+    border-bottom:1px dashed lime;
+    padding-bottom:10px;
+}
+
+/* BUTTON */
+button{
+    background:black;
+    border:1px solid lime;
+    color:lime;
+    padding:8px 15px;
+    margin:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:lime;
+    color:black;
+}
+
+/* NAV */
+.nav{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+}
+
+/* STATUS */
+.status{
+    margin-top:20px;
+    text-align:center;
+    font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<script>
+if(sessionStorage.getItem("hdx_login") !== "true"){
+    window.location.href = "index.html";
+}
+</script>
+
+<canvas id="particles"></canvas>
+
+<!-- ✅ TOP CENTER TEXT -->
+<div class="top-title">WINDOW (32BIT)</div>
+
+<div class="container">
+
+    <div class="link-box">
+        <b>HDX PANEL V1.0</b>
+        <button onclick="openLink('https://example.com')">Open</button>
+        <button onclick="downloadLink('https://example.com/file.zip')">Download</button>
+    </div>
+
+    <div class="link-box">
+        <b>HDX PANEL V2.0</b>
+        <button onclick="openLink('https://google.com')">Open</button>
+        <button onclick="downloadLink('https://example.com/file2.zip')">Download</button>
+    </div>
+
+    <div class="status">
+        ⚡ FPS: <span id="fps">0</span> | 📡 Ping: <span id="ping">--</span>
+    </div>
+
+    <div class="nav">
+        <button onclick="goBack()">⬅ Back</button>
+        <button onclick="goNext()">Next ➡</button>
+    </div>
+
+</div>
+
+<script>
+
+// NAV
+function goBack(){
+    window.location.href = "selector.html"; /* 🔥 FIX BACK */
+}
+function goNext(){
+    window.location.href = "about.html";
+}
+
+// LINKS
+function openLink(url){
+    window.open(url, "_blank");
+}
+
+function downloadLink(url){
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "";
+    a.click();
+}
+
+// FPS
+let last = performance.now();
+function fps(){
+    let now = performance.now();
+    let value = Math.round(1000/(now-last));
+    last = now;
+    document.getElementById("fps").innerText = value;
+    requestAnimationFrame(fps);
+}
+fps();
+
+// PING
+async function ping(){
+    let start = performance.now();
+    try{
+        await fetch("https://www.google.com", {mode:"no-cors"});
+        let end = performance.now();
+        document.getElementById("ping").innerText = Math.round(end-start)+" ms";
+    }catch{
+        document.getElementById("ping").innerText = "error";
+    }
+}
+setInterval(ping, 2000);
+
+// PARTICLES
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+
+let particles = [];
+
+for(let i=0;i<120;i++){
+    particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        size:Math.random()*2 + 0.5,
+        dx:(Math.random()-0.5)*0.3,
+        dy:(Math.random()-0.5)*0.3
+    });
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="lime";
+
+    particles.forEach(p=>{
+        p.x+=p.dx;
+        p.y+=p.dy;
+
+        if(p.x<0||p.x>canvas.width) p.dx*=-1;
+        if(p.y<0||p.y>canvas.height) p.dy*=-1;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener("resize", resize);
+
+</script>
+
+</body>
+</html>
