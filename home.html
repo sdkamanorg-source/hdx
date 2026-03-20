@@ -55,19 +55,44 @@ button{
     color:#00ffff;
     cursor:pointer;
     transition:0.3s;
+    letter-spacing:1px;
 }
 
 button:hover{
     background:#00ffff;
     color:black;
     transform:scale(1.1);
+    box-shadow:0 0 15px #00ffff, 0 0 30px #00ffff;
 }
 
-/* LOGOUT BUTTON */
+button:active{
+    transform:scale(0.9);
+}
+
+/* 🔥 LOGOUT BUTTON (TOP RIGHT FIXED) */
 .logout{
-    position:absolute;
-    top:10px;
-    right:10px;
+    position:fixed;
+    top:15px;
+    right:15px;
+    z-index:9999;
+    padding:8px 18px;
+    border:1px solid red;
+    color:red;
+    background:black;
+    font-size:12px;
+    letter-spacing:1px;
+    transition:0.3s;
+}
+
+.logout:hover{
+    background:red;
+    color:black;
+    box-shadow:0 0 15px red, 0 0 30px red;
+    transform:scale(1.1);
+}
+
+.logout:active{
+    transform:scale(0.9);
 }
 
 /* TRANSITION */
@@ -92,9 +117,8 @@ button:hover{
 
 <body>
 
-<!-- 🔐 PROTECTION FIXED -->
+<!-- 🔐 LOGIN PROTECTION -->
 <script>
-// ✅ BLOCK DIRECT ACCESS (ONLY CHECK)
 if(sessionStorage.getItem("hdx_login") !== "true"){
     window.location.href = "index.html";
 }
@@ -103,15 +127,15 @@ if(sessionStorage.getItem("hdx_login") !== "true"){
 <canvas id="particles"></canvas>
 <div class="transition" id="transition"></div>
 
+<!-- 🔴 LOGOUT (NOW OUTSIDE CONTAINER) -->
+<button class="logout" onclick="logout()">Logout</button>
+
 <div class="container">
 
     <div class="top">
         <div>📡 Ping: <span id="ping">--</span></div>
         <div>⚡ FPS: <span id="fps">0</span>/360</div>
     </div>
-
-    <!-- 🔥 LOGOUT BUTTON -->
-    <button class="logout" onclick="logout()">Logout</button>
 
     <h1>WELCOME TO HDX</h1>
 
@@ -133,13 +157,13 @@ function logout(){
     },400);
 }
 
-// NEXT PAGE
+// 👉 GO TO SELECTOR PAGE
 function goNext(){
     let t = document.getElementById("transition");
     t.classList.add("active");
 
     setTimeout(()=>{
-        window.location.href = "page2.html";
+        window.location.href = "selector.html";
     },400);
 }
 
